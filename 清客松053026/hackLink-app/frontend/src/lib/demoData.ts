@@ -1,0 +1,176 @@
+import type { Conversation, MatchResult, Relation } from '@/lib/types';
+
+export const demoMatchResults: MatchResult[] = [
+  {
+    twin_id: 'demo-connection-brian',
+    user_id: 'demo-user-brian',
+    codename: '@radical_builder_23',
+    display_name: 'Brian',
+    avatar_variant: 3,
+    twin_name: 'Sage',
+    vibe_summary: '慢热但很实干的 AI Infra Builder，喜欢拿真实 demo 说话。',
+    match_score: 91,
+    match_reasons: {
+      resonance: '同频点：你们都关注 Agent Memory，也都偏好真实项目导向',
+      complement: '互补点：TA 偏 AI Infra，你偏产品 Workflow，天然可组队',
+      taste: 'Taste 契合：你们都讨厌无效社交，能很快进入问题',
+    },
+    soul_slices_of_b: [
+      { text: '#慢热Builder', source: 'taste' },
+      { text: '#真实项目导向', source: 'taste' },
+      { text: '#不爱泛聊', source: 'judgment' },
+    ],
+    why_you_two: '你们其实已经在三场活动里擦肩而过，但从没真正聊过。这次 Brian 正在找一个能帮他判断产品方向的人。',
+    coffee_chat_suggestion: '从“上次你也提到 Agent Memory”切入，约 15 分钟判断是否值得赛后继续做 demo。',
+  },
+  {
+    twin_id: 'demo-connection-nova',
+    user_id: 'demo-user-nova',
+    codename: '@deep_observer_09',
+    display_name: 'Nova',
+    avatar_variant: 5,
+    twin_name: 'Nova',
+    vibe_summary: '从用户行为出发思考产品的深度观察者，擅长把模糊需求讲清楚。',
+    match_score: 84,
+    match_reasons: {
+      resonance: '同频点：你们都相信产品判断来自细节观察',
+      complement: '互补点：你偏技术落地，TA 偏用户理解',
+      taste: 'Taste 契合：你们都不喜欢只有概念、没有下一步的聊天',
+    },
+    soul_slices_of_b: [
+      { text: '#产品观察者', source: 'taste' },
+      { text: '#真实反馈', source: 'judgment' },
+      { text: '#细节控', source: 'blocker' },
+    ],
+    why_you_two: 'Nova 最近在找一个能快速验证 AI 产品信任感的人，你的 demo 正好可以成为很好的讨论对象。',
+    coffee_chat_suggestion: '让 TA 现场试你的 onboarding，再聊用户为什么愿意把社交交给 Agent。',
+  },
+  {
+    twin_id: 'demo-connection-lin',
+    user_id: 'demo-user-lin',
+    codename: '@quiet_maker_17',
+    display_name: 'Lin',
+    avatar_variant: 7,
+    twin_name: 'Orbit',
+    vibe_summary: '安静、直接、执行力很强的全栈 Maker，正在找长期合作节奏。',
+    match_score: 79,
+    match_reasons: {
+      resonance: '同频点：你们都想把 hackathon demo 做成真正产品',
+      complement: '互补点：TA 能快速补工程实现，你更擅长定义体验',
+      taste: 'Taste 契合：都偏好短会、高密度、会后有明确动作',
+    },
+    soul_slices_of_b: [
+      { text: '#全栈Maker', source: 'taste' },
+      { text: '#长期合作者', source: 'judgment' },
+      { text: '#直接沟通', source: 'blocker' },
+    ],
+    why_you_two: 'Lin 不太主动社交，但连续收藏了几个 CoffeeChat 相关项目，说明他对你的方向有真实兴趣。',
+    coffee_chat_suggestion: '用“赛后要不要一起把 demo 打磨成产品”作为开场。',
+  },
+];
+
+export const demoConversations: Conversation[] = [
+  {
+    id: 'demo-conv-brian',
+    twin_conversation_id: null,
+    event_id: 'demo-event',
+    user_a_id: 'demo-user',
+    user_b_id: 'demo-user-brian',
+    other_user: {
+      codename: '@radical_builder_23',
+      display_name: 'Brian',
+      avatar_variant: 3,
+      twin_name: 'Sage',
+    },
+    messages: [
+      {
+        role: 'system',
+        content: 'Agent 认为你们值得聊聊：Agent Memory / Demo Feedback / 真实项目导向。',
+        timestamp: new Date().toISOString(),
+      },
+      {
+        role: 'twin_b',
+        content: 'Coffee Chat 邀约已生成，建议 18:20-18:35 在二楼咖啡角短聊。',
+        timestamp: new Date().toISOString(),
+      },
+    ],
+    controller: 'twin_a',
+    status: 'active',
+    last_message_at: new Date().toISOString(),
+  },
+  {
+    id: 'demo-conv-nova',
+    twin_conversation_id: null,
+    event_id: 'demo-event',
+    user_a_id: 'demo-user',
+    user_b_id: 'demo-user-nova',
+    other_user: {
+      codename: '@deep_observer_09',
+      display_name: 'Nova',
+      avatar_variant: 5,
+      twin_name: 'Nova',
+    },
+    messages: [
+      {
+        role: 'twin_a',
+        content: '我注意到你们都在关注 AI 产品的信任建立，可以从 demo 体验聊起。',
+        timestamp: new Date().toISOString(),
+      },
+    ],
+    controller: 'twin_a',
+    status: 'active',
+    last_message_at: new Date().toISOString(),
+  },
+];
+
+export const demoRelations: Relation[] = [
+  {
+    id: 'demo-relation-brian',
+    contact_id: 'demo-user-brian',
+    codename: '@radical_builder_23',
+    display_name: 'Brian',
+    avatar_variant: 3,
+    twin_name: 'Sage',
+    relation_type: 'peer',
+    circle: 'core',
+    vibe_description: 'AI Infra 方向的实干 Builder，适合一起判断底层能力和产品边界。',
+    why_connected: {
+      commonGround: '你们都关注 Agent Memory，都偏好真实项目导向。',
+      complement: 'TA 偏 AI Infra，你偏产品 Workflow，天然可组队。',
+      tasteMatch: '都讨厌无效社交，表达直接，能快速进入问题。',
+    },
+    timeline: [
+      { type: '共同活动', date: '2026-05-31', description: '都报名了清客松 AI Agent 场。' },
+      { type: 'Agent 初聊', date: '2026-05-31', description: '分身确认双方都在找 demo feedback。' },
+    ],
+    user_tag: '#长期合作者',
+    strength_analysis: '你们有明确方向重合，且双方都表达过赛后继续沟通的意愿。',
+    last_interaction_at: new Date().toISOString(),
+    x: 210,
+    y: 92,
+  },
+  {
+    id: 'demo-relation-nova',
+    contact_id: 'demo-user-nova',
+    codename: '@deep_observer_09',
+    display_name: 'Nova',
+    avatar_variant: 5,
+    twin_name: 'Nova',
+    relation_type: 'interest',
+    circle: 'potential',
+    vibe_description: '擅长用户观察和产品表达，能给你的 demo 很直接的反馈。',
+    why_connected: {
+      commonGround: '都相信产品判断来自真实用户细节。',
+      complement: '你偏技术落地，TA 偏用户理解。',
+      tasteMatch: '都不喜欢空泛概念，聊天需要有下一步。',
+    },
+    timeline: [
+      { type: 'Agent 初聊', date: '2026-05-31', description: '发现双方都在关注 AI 信任感。' },
+    ],
+    user_tag: '#项目反馈',
+    strength_analysis: '这段关系目前互动较少，但 taste 很接近，值得用一次短聊激活。',
+    last_interaction_at: new Date().toISOString(),
+    x: 96,
+    y: 178,
+  },
+];

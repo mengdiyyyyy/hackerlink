@@ -16,10 +16,17 @@ from routers import auth, twins, events, explore, conversations, meetings, netwo
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup
-    pool = await get_pool()
-    await init_db(pool)
-    await get_redis()
+    # Startup. Postgres/Redis are best-effort so a missing service does not
+    # stop the server from booting (DB-backed routes will simply error).
+    try:
+        pool = await get_pool()
+        await init_db(pool)
+    except Exception as exc:
+        print(f"[startup] WARNING: Postgres unavailable, DB routes disabled: {exc}")
+    try:
+        await get_redis()
+    except Exception as exc:
+        print(f"[startup] WARNING: Redis unavailable: {exc}")
     yield
     # Shutdown
     await close_pool()

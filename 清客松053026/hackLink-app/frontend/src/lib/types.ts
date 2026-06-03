@@ -19,8 +19,10 @@ export interface Twin {
   topic_content: string;
   current_blocker: string | null;
   vibe_summary: string;
+  vibe_profile?: string | null;
   soul_slices: SoulSlice[];
   taste_tags: string[];
+  system_tags?: string[];
   anti_patterns: string[];
   created_at: string;
 }
@@ -67,6 +69,7 @@ export interface Conversation {
     display_name: string | null;
     avatar_variant: number;
     twin_name: string;
+    vibe_summary?: string;
   };
   messages: ChatMessage[];
   controller: 'twin_a' | 'twin_b' | 'user_a' | 'user_b';
@@ -75,9 +78,10 @@ export interface Conversation {
 }
 
 export interface ChatMessage {
-  role: 'twin_a' | 'twin_b' | 'user_a' | 'user_b' | 'system';
+  role: 'user' | 'agent' | 'twin_a' | 'twin_b' | 'user_a' | 'user_b' | 'system';
   content: string;
   timestamp: string;
+  auto?: boolean;
 }
 
 export interface MeetingInvitation {

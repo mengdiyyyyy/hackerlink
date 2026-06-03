@@ -20,8 +20,10 @@ CREATE TABLE twins (
   topic_content TEXT,
   current_blocker TEXT,
   vibe_summary TEXT,
+  vibe_profile TEXT,
   soul_slices JSONB DEFAULT '[]',
   taste_tags TEXT[] DEFAULT '{}',
+  system_tags TEXT[] DEFAULT '{}',
   anti_patterns TEXT[] DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()

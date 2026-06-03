@@ -27,6 +27,10 @@ export function MyTabEmpty() {
     ...(twin.taste_tags.length ? twin.taste_tags : ['#AI Builder', '#找长期合作者', '#Agent Memory']),
     '#真实项目导向',
   ].slice(0, 4);
+  const displayName = user?.display_name || twin.name;
+  const systemTags = twin.system_tags?.length
+    ? twin.system_tags
+    : ['#Product Founder', '#项目反馈', '#技术互补', '#偏好直接沟通', '#开放 CoffeeChat'];
   const hasFindings = matchResults.length > 0;
 
   const openFindings = () => {
@@ -63,11 +67,12 @@ export function MyTabEmpty() {
           <Avatar variant={user?.avatar_variant || 1} size="md" />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h2 className="font-heading text-xl font-semibold">{twin.name}</h2>
+              <h2 className="font-heading text-xl font-semibold truncate">{displayName}</h2>
               <span className="rounded-full bg-success/10 px-2 py-0.5 text-[11px] text-success">观察中</span>
             </div>
             <p className="font-mono text-xs text-text-weak mt-0.5">
-              {user?.display_name || user?.codename}
+              {user?.codename}
+              {twin.name ? <span className="ml-1.5 text-text-weak/70">· 分身 {twin.name}</span> : null}
             </p>
           </div>
           <ChevronDown size={18} className={`text-text-weak transition-transform ${expanded ? 'rotate-180' : ''}`} />
@@ -86,11 +91,12 @@ export function MyTabEmpty() {
             <div>
               <p className="font-mono text-xs text-text-weak mb-2">vibe_profile</p>
               <p className="text-sm leading-6 text-text-secondary">
-                你不是那种喜欢混圈子的人，但一旦认定方向，会更想找到能一起把 demo 做成产品的人，而不是交换一百张名片。
+                {twin.vibe_profile ||
+                  '你不是那种喜欢混圈子的人，但一旦认定方向，会更想找到能一起把 demo 做成产品的人，而不是交换一百张名片。'}
               </p>
             </div>
             <div className="flex flex-wrap gap-1.5">
-              {['#Product Founder', '#项目反馈', '#技术互补', '#偏好直接沟通', '#开放 CoffeeChat'].map((tag) => (
+              {systemTags.map((tag) => (
                 <Tag key={tag} variant="system">{tag}</Tag>
               ))}
             </div>

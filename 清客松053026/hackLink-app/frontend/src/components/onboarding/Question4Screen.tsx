@@ -35,12 +35,15 @@ export function Question4Screen() {
         topic_content: onboardingData.topic_content,
         current_blocker: finalBlocker || null,
         vibe_summary: '在技术产品上有原创判断的深度思考者',
+        vibe_profile:
+          '你不是那种喜欢混圈子的人，但一旦认定方向，会更想找到能一起把 demo 做成产品的人，而不是交换一百张名片。',
         soul_slices: [
           { text: `你对「${onboardingData.topic_type}」有独特的洞察`, source: 'taste' as const },
           { text: `你关注的核心是：${onboardingData.topic_content.slice(0, 30)}...`, source: 'judgment' as const },
           { text: finalBlocker ? `你当前卡在：${finalBlocker.slice(0, 30)}...` : '你正在探索新的可能性', source: 'blocker' as const },
         ],
         taste_tags: ['#AI Builder', '#Deep Thinker', '#不爱泛聊'],
+        system_tags: ['#找长期合作者', '#偏好直接沟通', '#开放 CoffeeChat'],
         anti_patterns: ['无效社交', '泛泛而谈'],
         created_at: new Date().toISOString(),
       });

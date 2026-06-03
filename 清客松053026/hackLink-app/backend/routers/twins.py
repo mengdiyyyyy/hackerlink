@@ -31,18 +31,25 @@ async def onboarding(
             topic_type=req.topic_type,
             topic_content=req.topic_content,
             current_blocker=req.current_blocker,
+            display_name=user["display_name"],
         )
     except Exception:
         # Fallback if AI is not available
+        who = user["display_name"] or "你"
         twin_data = {
             "name": "Echo",
             "vibe_summary": f"在{req.topic_type}上有独到见解的深度思考者",
+            "vibe_profile": (
+                f"{who}不是那种喜欢混圈子的人，但一旦认定方向，"
+                f"会更想找到能一起把想法做成产品的人，而不是交换一百张名片。"
+            ),
             "soul_slices": [
                 {"text": f"你对「{req.topic_type}」有独特的洞察", "source": "taste"},
                 {"text": f"你关注的核心是：{req.topic_content[:30]}...", "source": "judgment"},
                 {"text": req.current_blocker or "你正在探索新的可能性", "source": "blocker"},
             ],
             "taste_tags": ["#AI Builder", "#Deep Thinker", "#不爱泛聊"],
+            "system_tags": ["#找长期合作者", "#偏好直接沟通", "#开放 CoffeeChat"],
             "anti_patterns": ["无效社交", "泛泛而谈"],
         }
 
@@ -53,13 +60,16 @@ async def onboarding(
         await pool.execute(
             """UPDATE twins SET
                 name = $1, topic_type = $2, topic_content = $3, current_blocker = $4,
-                vibe_summary = $5, soul_slices = $6::jsonb, taste_tags = $7, anti_patterns = $8,
+                vibe_summary = $5, vibe_profile = $6, soul_slices = $7::jsonb,
+                taste_tags = $8, system_tags = $9, anti_patterns = $10,
                 updated_at = NOW()
-            WHERE user_id = $9""",
+            WHERE user_id = $11""",
             twin_data["name"], req.topic_type, req.topic_content, req.current_blocker,
             twin_data["vibe_summary"],
+            twin_data.get("vibe_profile"),
             json.dumps(twin_data["soul_slices"]),
             twin_data["taste_tags"],
+            twin_data.get("system_tags") or [],
             twin_data["anti_patterns"],
             user["id"],
         )
@@ -67,12 +77,14 @@ async def onboarding(
     else:
         twin_id = await pool.fetchval(
             """INSERT INTO twins (user_id, name, topic_type, topic_content, current_blocker,
-                vibe_summary, soul_slices, taste_tags, anti_patterns)
-            VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8, $9) RETURNING id""",
+                vibe_summary, vibe_profile, soul_slices, taste_tags, system_tags, anti_patterns)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8::jsonb, $9, $10, $11) RETURNING id""",
             user["id"], twin_data["name"], req.topic_type, req.topic_content, req.current_blocker,
             twin_data["vibe_summary"],
+            twin_data.get("vibe_profile"),
             json.dumps(twin_data["soul_slices"]),
             twin_data["taste_tags"],
+            twin_data.get("system_tags") or [],
             twin_data["anti_patterns"],
         )
 

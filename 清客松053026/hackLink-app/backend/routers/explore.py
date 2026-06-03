@@ -200,106 +200,12 @@ async def select_matches(
 
 
 async def ensure_demo_participants(pool: asyncpg.Pool, event_id: str):
-    demo_people = [
-        {
-            "codename": "@radical_builder_23",
-            "display_name": "Brian",
-            "avatar_variant": 3,
-            "twin_name": "Sage",
-            "topic_type": "Agent Memory",
-            "topic_content": "正在做 memory layer 和 voice agent pipeline，希望找到产品判断强的人给 demo 反馈。",
-            "current_blocker": "不确定 memory layer 应该先服务 infra builder 还是产品团队。",
-            "vibe_summary": "慢热但很实干的 AI Infra Builder，喜欢拿真实 demo 说话。",
-            "soul_slices": [
-                {"text": "#慢热Builder", "source": "taste"},
-                {"text": "#真实项目导向", "source": "judgment"},
-                {"text": "#不爱泛聊", "source": "blocker"},
-            ],
-            "taste_tags": ["#Agent Memory", "#AI Infra", "#真实项目导向"],
-            "anti_patterns": ["无效社交", "只有概念没有 demo"],
-        },
-        {
-            "codename": "@deep_observer_09",
-            "display_name": "Nova",
-            "avatar_variant": 5,
-            "twin_name": "Nova",
-            "topic_type": "AI 产品信任感",
-            "topic_content": "关注用户如何理解 AI 决策，希望找到可以现场测试 onboarding 的 builder。",
-            "current_blocker": "需要真实 demo 观察，而不是继续讨论抽象用户画像。",
-            "vibe_summary": "从用户行为出发思考产品的深度观察者，擅长把模糊需求讲清楚。",
-            "soul_slices": [
-                {"text": "#产品观察者", "source": "taste"},
-                {"text": "#真实反馈", "source": "judgment"},
-                {"text": "#细节控", "source": "blocker"},
-            ],
-            "taste_tags": ["#产品观察", "#真实反馈", "#细节控"],
-            "anti_patterns": ["泛泛而谈", "只看指标不看体验"],
-        },
-        {
-            "codename": "@quiet_maker_17",
-            "display_name": "Lin",
-            "avatar_variant": 7,
-            "twin_name": "Orbit",
-            "topic_type": "长期合作者",
-            "topic_content": "全栈 maker，想把 hackathon demo 做成真正产品，偏好短会和明确下一步。",
-            "current_blocker": "还没找到一个能共同定义体验和推进节奏的人。",
-            "vibe_summary": "安静、直接、执行力很强的全栈 Maker，正在找长期合作节奏。",
-            "soul_slices": [
-                {"text": "#全栈Maker", "source": "taste"},
-                {"text": "#长期合作者", "source": "judgment"},
-                {"text": "#直接沟通", "source": "blocker"},
-            ],
-            "taste_tags": ["#全栈Maker", "#长期合作者", "#直接沟通"],
-            "anti_patterns": ["会议过长", "没有下一步"],
-        },
-    ]
+    """Seed the real MBA-profile agents as event participants.
 
-    for person in demo_people:
-        user_id = await pool.fetchval(
-            """INSERT INTO users (codename, display_name, avatar_variant)
-            VALUES ($1, $2, $3)
-            ON CONFLICT (codename) DO UPDATE SET
-              display_name = EXCLUDED.display_name,
-              avatar_variant = EXCLUDED.avatar_variant
-            RETURNING id""",
-            person["codename"],
-            person["display_name"],
-            person["avatar_variant"],
-        )
-        twin_id = await pool.fetchval(
-            """INSERT INTO twins (
-              user_id, name, topic_type, topic_content, current_blocker,
-              vibe_summary, soul_slices, taste_tags, anti_patterns
-            )
-            VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8, $9)
-            ON CONFLICT (user_id) DO UPDATE SET
-              name = EXCLUDED.name,
-              topic_type = EXCLUDED.topic_type,
-              topic_content = EXCLUDED.topic_content,
-              current_blocker = EXCLUDED.current_blocker,
-              vibe_summary = EXCLUDED.vibe_summary,
-              soul_slices = EXCLUDED.soul_slices,
-              taste_tags = EXCLUDED.taste_tags,
-              anti_patterns = EXCLUDED.anti_patterns,
-              updated_at = NOW()
-            RETURNING id""",
-            user_id,
-            person["twin_name"],
-            person["topic_type"],
-            person["topic_content"],
-            person["current_blocker"],
-            person["vibe_summary"],
-            json.dumps(person["soul_slices"]),
-            person["taste_tags"],
-            person["anti_patterns"],
-        )
-        await pool.execute(
-            """INSERT INTO event_participants (event_id, user_id, twin_id, explore_goals, custom_goal)
-            VALUES ($1::uuid, $2, $3, $4, $5)
-            ON CONFLICT (event_id, user_id) DO NOTHING""",
-            event_id,
-            user_id,
-            twin_id,
-            ["能给真实反馈的人", "同方向 Builder"],
-            "Demo seed participant",
-        )
+    Kept under the original name because explore's matching task calls it; it
+    now delegates to the shared profile-agent seeder so explore and the message
+    list use the same people.
+    """
+    from agent_profiles import ensure_agents
+
+    await ensure_agents(pool, str(event_id))

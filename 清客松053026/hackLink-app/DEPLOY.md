@@ -15,8 +15,10 @@ Render Blueprint deploys from a GitHub repository.
 
 1. Open Render.
 2. Choose **New +** -> **Blueprint**.
-3. Connect the GitHub repo.
-4. Select `render.yaml`.
+3. Connect the GitHub repo:
+   `https://github.com/mengdiyyyyy/hackerlink`
+4. Use this Blueprint Path:
+   `清客松053026/hackLink-app/render.yaml`
 5. Apply the blueprint.
 
 Render will create:

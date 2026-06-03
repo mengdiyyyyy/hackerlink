@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100dvh;
+  overscroll-behavior: none;
+}
+
+#root {
+  max-width: 393px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  position: relative;
+}
+
+/* Vibe quote style */
+.vibe-quote {
+  @apply text-accent font-serif italic;
+}
+
+/* System tag style */
+.system-tag {
+  @apply font-mono text-xs text-text-secondary bg-bg border border-border rounded px-1.5 py-0.5;
+}
+
+/* Card style */
+.card {
+  @apply bg-white border border-border rounded-lg p-4;
+}
+
+/* Primary button */
+.btn-primary {
+  @apply bg-primary text-white rounded-lg py-3.5 px-6 font-medium text-base w-full text-center transition-all active:scale-[0.98];
+}
+
+.btn-primary:disabled {
+  @apply opacity-50 pointer-events-none;
+}
+
+/* Secondary button */
+.btn-secondary {
+  @apply bg-white text-text-primary border border-border rounded-lg py-3.5 px-6 font-medium text-base w-full text-center transition-all active:scale-[0.98];
+}
+
+/* Slide transitions */
+.slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pulse animation for twin status */
+.pulse-dot {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}

@@ -4,7 +4,7 @@
     {
       "name": "frontend",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "清客松053026/hackLink-app/frontend", "run", "dev"],
+      "runtimeArgs": ["--prefix", "frontend", "run", "dev"],
       "port": 5173
     }
   ]
